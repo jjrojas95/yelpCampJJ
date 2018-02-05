@@ -50,6 +50,11 @@ router.get("/logout", function(req, res) {
   req.flash('success', 'Logged you out!');
   res.redirect("/campgrounds");
 });
+// reset password routes
+
+router.get('/forgot',function(req,res){
+  res.render('forgot');
+});
 
 
 module.exports = router;
