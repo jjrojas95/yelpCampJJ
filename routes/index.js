@@ -15,9 +15,23 @@ router.get("/register", function(req, res) {
 
 //handle sign up logic
 router.post("/register", function(req, res) {
-  var newUser = new User({
-    username: req.body.username
-  });
+  var newUser;
+  if (req.body.avatar) {
+    newUser = new User({
+      username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      avatar: req.body.avatar 
+    });  
+  } else {
+    newUser = new User({
+        username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email
+      });
+  }
   if (req.body.secretAdmin == 'secretCode123') {
       newUser.isAdmin = true;
       }
@@ -27,7 +41,8 @@ router.post("/register", function(req, res) {
       return res.render("register", {page: 'register', error: err.message});
     }
     passport.authenticate("local")(req, res, function() {
-            req.flash('success', 'Welcome to YelpCamp ' + user.username);
+      req.flash('success', 'Welcome to YelpCamp ' + user.username);
+      console.log(user);
       res.redirect("/campgrounds");
     });
   });
@@ -49,6 +64,20 @@ router.get("/logout", function(req, res) {
   req.logout();
   req.flash('success', 'Logged you out!');
   res.redirect("/campgrounds");
+});
+
+//USER'S PROFILE
+
+router.get('/users/:id' , function(req,res){
+  User.findById(req.params.id,function(err,foundUser){
+    if (err) {
+      req.flash('error','Somenthing went wrong');
+      res.redirect('/campgrounds');
+    } else {
+      res.render('users/show',{user: foundUser , page: 'user'});
+    }
+    
+  });
 });
 // reset password routes
 
