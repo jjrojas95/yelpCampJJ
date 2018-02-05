@@ -4,7 +4,7 @@ var passportLocalMongoose = require("passport-local-mongoose");
 var UserSchema = new mongoose.Schema({
   username: String,
   password: String,
-  avatar: {type: Sting, default:"https://s3.amazonaws.com/FringeBucket/default-user.png"},
+  avatar: {type: String, default:"https://s3.amazonaws.com/FringeBucket/default-user.png"},
   firstName: String,
   lastName: String,
   email: String,
