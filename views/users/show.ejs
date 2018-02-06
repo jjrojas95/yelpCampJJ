@@ -2,8 +2,8 @@
 
   <div class="row">
     <div class="col-md-4">
-    <div class="thumbnail">
-      
+      <div class="thumbnail">
+
         <h1>
           <%= user.firstName + " " + user.lastName%>
         </h1>
@@ -24,16 +24,20 @@
         other, but I know that seven of us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now. We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but it doesn't hold a candle
         to man.
       </p>
-    </div>
-    <ul>
-    <% campgrounds.forEach(function(camp){ %>
-      <li>
-        <a href="/campgrounds/<%= camp._id %>">
-          <%= camp.name %>
-        </a>
-      </li>
-      <% }); %>
+      <h3>
+        <%= user.username %>'s Campgrounds</h3>
+
+      <ul>
+        <% campgrounds.forEach(function(camp){ %>
+          <li>
+            <a href="/campgrounds/<%= camp._id %>">
+              <%= camp.name %>
+            </a>
+          </li>
+          <% }); %>
       </ul>
+    </div>
+
   </div>
 
   <% include ../partials/footer %>
