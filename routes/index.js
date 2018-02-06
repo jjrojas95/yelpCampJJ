@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
+var Campground = require('../models/campground');
 
 //root route
 router.get("/", function(req, res) {
@@ -10,7 +11,9 @@ router.get("/", function(req, res) {
 
 // show register form
 router.get("/register", function(req, res) {
-  res.render("register" , {page: 'register'} );
+  res.render("register", {
+    page: 'register'
+  });
 });
 
 //handle sign up logic
@@ -22,23 +25,26 @@ router.post("/register", function(req, res) {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      avatar: req.body.avatar 
-    });  
+      avatar: req.body.avatar
+    });
   } else {
     newUser = new User({
-        username: req.body.username,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email
-      });
+      username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email
+    });
   }
   if (req.body.secretAdmin == 'secretCode123') {
-      newUser.isAdmin = true;
-      }
+    newUser.isAdmin = true;
+  }
   User.register(newUser, req.body.password, function(err, user) {
     if (err) {
-//       req.flash( 'error', err.message );
-      return res.render("register", {page: 'register', error: err.message});
+      //       req.flash( 'error', err.message );
+      return res.render("register", {
+        page: 'register',
+        error: err.message
+      });
     }
     passport.authenticate("local")(req, res, function() {
       req.flash('success', 'Welcome to YelpCamp ' + user.username);
@@ -50,7 +56,9 @@ router.post("/register", function(req, res) {
 
 //show login form
 router.get("/login", function(req, res) {
-  res.render("login" , {page: 'login'});
+  res.render("login", {
+    page: 'login'
+  });
 });
 
 //handling login logic
@@ -68,20 +76,32 @@ router.get("/logout", function(req, res) {
 
 //USER'S PROFILE
 
-router.get('/users/:id' , function(req,res){
-  User.findById(req.params.id,function(err,foundUser){
+router.get('/users/:id', function(req, res) {
+  User.findById(req.params.id, function(err, foundUser) {
     if (err) {
-      req.flash('error','Somenthing went wrong');
+      req.flash('error', 'Somenthing went wrong');
       res.redirect('/campgrounds');
     } else {
-      res.render('users/show',{user: foundUser , page: 'user'});
+      Campground.find().where('author.id').equals(foundUser._id).exec(function(err, campgroundForUser) {
+        if (err) {
+          req.flash('error', 'Somenthing went wrong');
+          res.redirect('/campgrounds');
+        } else {
+          res.render('users/show', {
+            user: foundUser,
+            page: 'user',
+            campgrounds: campgroundForUser
+          });
+
+        }
+      });
     }
-    
+
   });
 });
 // reset password routes
 
-router.get('/forgot',function(req,res){
+router.get('/forgot', function(req, res) {
   res.render('forgot');
 });
 
