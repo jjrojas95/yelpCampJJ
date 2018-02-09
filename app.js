@@ -11,6 +11,7 @@ var express = require("express"),
   Comment = require("./models/comment"),
   User = require("./models/user"),
   seedDB = require("./seeds")
+require('dotenv').config();
 
 app.locals.moment = require('moment');
 app.locals.moment.locale('es');
@@ -20,7 +21,7 @@ var commentRoutes = require("./routes/comments"),
   campgroundRoutes = require("./routes/campgrounds"),
   indexRoutes = require("./routes/index")
 
-mongoose.connect("mongodb://localhost/yelp_campV3");
+mongoose.connect("mongodb://localhost/yelp_campV6");
 app.use(bodyParser.urlencoded({
   extended: true
 }));
