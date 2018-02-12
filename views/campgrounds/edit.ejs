@@ -5,19 +5,29 @@
       <%= campground.name %>
     </h1>
     <div class="forms-campgrounds">
-      <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="post">
+      <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="post" 
+            enctype="multipart/form-data">
         <div class="form-group">
-          <input class="form-control" type="text" name="campground[name]" placeholder="Name" value="<%= campground.name %>">
+          <input class="form-control" type="text" name="campground[name]" 
+                 placeholder="Name" value="<%= campground.name %>">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="number" name="campground[price]" 
+                 placeholder="cost" step="0.01" min="0" value="<%= campground.price %>" 
+                 required>
         </div>
         <div class="form-group">
           <label for="location">Location</label>
-          <input class="form-control" type="text" name="campground[location]" id="location" value="<%= campground.location %>">
+          <input class="form-control" type="text" name="campground[location]" 
+                 id="location" value="<%= campground.location %>">
         </div>
         <div class="form-group">
-          <input class="form-control" type="text" name="campground[image]" placeholder="Image url" value="<%= campground.image %>">
+          <label for="image">Image</label>
+          <input type="file" id="image" name="image" accept="image/*" >
         </div>
         <div class="form-group">
-          <input class="form-control" type="text" name="campground[description]" placeholder="Description" value="<%= campground.description %>">
+          <input class="form-control" type="text" name="campground[description]" 
+                 placeholder="Description" value="<%= campground.description %>">
         </div>
         <div class="form-group">
           <button class="btn btn-lg btn-primary btn-block">Submit!</button>
